@@ -1,8 +1,18 @@
-import { sum } from "./skeleton";
+import { createObjectCsvWriter } from 'csv-writer'
 
-// Call your function of interest, here, instead of sum.
-//You can use vscode's "Debug main.ts" launcher to debug, starting here.
+const fs = require('fs');
 
-const answer = sum(10, 200);
+const jokes = fs.readFileSync('./src/jokes.txt', 'utf-8')
 
-console.log({ answer });
+
+const splittedJokesArray: string[] = jokes.split(/\n{2,}/g);
+
+type jokes = { id:number, joke:string}
+const jokesObjects: jokes[] = splittedJokesArray.map((el, index) => ({id:index, joke: el}))
+console.log(jokesObjects)
+
+
+const createCsvWriter = require('csv-writer').createObjectCsvWriter
+
+const csvWriter = createCsvWriter({path: './src/jokes.csv', header: [{id: 'jokesId', title: 'Id'}, {id: 'jokes', title: 'Joke description'}]});
+
